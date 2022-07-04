@@ -1,0 +1,104 @@
+Create a Kinesis Firehose - 
+==========================
+
+Create a delivery stream
+
+Source - DirectPUT  ( we will put the data from Kinesis API or individul Ec2 instance)
+
+Destination - AmazonS3
+
+Delivery stream Name - DemoLogs
+
+Destination setting - orderlog001-001(S3 Bucket name)
+
+Buffer hints, compression and encryption
+
+Buffer Interval - 60
+
+click on Create Delivery stream
+
+
+
+Create a Role - ec2-admin
+policy - administratorAccess
+
+Create a Amazon Linux Ec2 Instance
+
+Add the Role - ec2-admin
+
+
+Login to Ec2 instance
+
+sudo su
+
+sudo yum install -y aws-kinesis-agent ( Install the kinesis agent)
+
+
+git clone https://github.com/awsdevops009/kinesis.git
+
+sudo mkdir /var/log/cadabra/
+
+
+Go to the /etc/aws-kinesis
+
+Modify the agent.json file and replace the new agent.json file inside /etc/aws-kinesis
+
+
+
+vi agent.json
+
+{
+  "cloudwatch.emitMetrics": true,
+  "kinesis.endpoint": "",
+  "firehose.endpoint": "firehose.us-east-1.amazonaws.com",
+
+  "awsAccessKeyId": "",
+  "awsSecretAccessKey": "",
+
+  "flows": [
+    {
+      "filePattern": "/var/log/cadabra/*.log",
+      "kinesisStream": "DemoLogs"
+      
+    }
+  ]
+}
+
+
+
+Now you are in /etc/aws-kinesis
+
+Now start the agent service
+
+sudo service aws-kinesis-agent start
+
+sudo chkconfig aws-kinesis-agent on  (To see service has started or not)
+
+cd /home/ec2-user/kinesis
+
+sudo ./LogGenerator.py 200000 ( It is going to generator 2 lakhs record in log directory)
+
+cd /var/log/cadabra/
+
+ls ( you should see log file with timestamp has created)
+
+
+tail -f /var/log/aws-kinesis-agent/aws-kinesis-agent.log
+
+cd /var/log/aws-kinesis-agent/
+
+tail -10 aws-kinesis-agent.log
+
+
+Go to S3 and see the bucker and log file will be there with 5 mb size file.
+
+
+
+
+
+
+
+
+
+wget http://media.sundog-soft.com/AWSBigData/LogGenerator.zip
+

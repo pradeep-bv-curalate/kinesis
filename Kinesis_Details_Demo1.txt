@@ -1,0 +1,67 @@
+
+Kinesis Demo - 1
+===================
+
+Kinesis Stream - DemoStream
+
+click on shard estimator
+
+Producers
+--------
+
+- Amazon Kinesis Agent
+- AWS SDK
+- Amazon Kinesis Producer Library (KPL)
+
+Consumers
+---------
+
+Amazon Kinesis Data Analytics
+Amazon Kinesis Data Firehose
+Amazon Kinesis Client Library (KCL)
+
+configuration
+
+if you want to scale the shard
+
+click on cloudshell
+
+aws --version
+
+# CLI v2
+aws kinesis put-record --stream-name DemoStream --partition-key user1 --data "user signup" --cli-binary-format raw-in-base64-out
+
+# CLI v1
+aws kinesis put-record --stream-name test --partition-key user1 --data "user signup"
+
+
+Go to the monitoring Tab ,  to see the update.
+
+CONSUMER 
+==========
+
+# describe the stream
+aws kinesis describe-stream --stream-name DemoStream
+
+Note - "ShardId": "shardId-000000000000"
+
+# Consume some data
+aws kinesis get-shard-iterator --stream-name DemoStream --shard-id shardId-000000000000 --shard-iterator-type TRIM_HORIZON
+
+Note: ShardId should be same. we are going to read all the record from the very begining.
+
+aws kinesis get-records --shard-iterator <>
+
+aws kinesis get-records --shard-iterator "AAAAAAAAAAFyMOvNTwab/iUxg2FqsxgH2VdaOV6paHx69sApZ6rmp54egUCCzPX5SImGzGYAIygzGk5rZQWecXUgsrcH+mqBr9xyW8x5Z2EWylexFUeBgAkOBovaGxo4HNP69FSithaTHZPr7iDWilKOu4o2/1yE3tg0lND19GVHLqQcVDoergsfzvuMZKjhW3+EjRskECc0zprGse6AhPbyg3xzakQNQFBJKIe3lI76fn7RzhawUQ=="
+
+Now we will get all the records
+
+base64 decode online
+
+https://www.base64decode.org/
+
+search the data in the decode website - dXNlciBzaWdudXA
+
+
+
+
