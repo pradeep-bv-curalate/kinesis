@@ -1,0 +1,244 @@
+
+https://aws.amazon.com/kinesis/
+
+collecting streaming data
+=========================
+
+There is s a lot of ways to move data into AWS.
+
+Real time collection where we can perform immediate action on our data
+
+- Kinesis data streams (KDS)
+- Simple Queue Service (SQS)
+
+Near real-time which is more for reactive action instead of immediate.
+
+- Kinesis Data Firehose (KDF)
+- Database Migration Service (DMS)
+
+
+
+- streaming data makes up mass amounts of data that is collected in  the different ways that we can collect it, process it, and store it within AWS.
+
+- How data loses value over time. See historical data this is data that is normally stored in a data warehousing solution or a data lake.
+
+- see more actionable data. This is data that is captured in real time, within seconds or within minutes. This is where all the interesting data lives.
+
+- We will see about collecting, processing, transforming, and storing streaming data using services like Amazon Kinesis.
+
+Kinesis Family
+--------------
+
+- Streaming data is data that is generated continuously by thousands of data sources and these are typically sent in small data records
+simultaneously think in the order of kilobytes.
+
+
+For e.g 
+
+- sensors in transportation vehicles or industrial equipment, or in some factory or farming machinery that sends data to streaming applications and what these
+applications do is they monitor performance,they detect any potential defects in advance, or even place an order for spare parts when defects or any type of anomaly is detected within the equipment that it's running on.
+
+- social media websites or e-commerce websites and what it does is it aggregates and enriches the data depending on the demographics from the users that are actually using those applications
+
+
+Amazon Kinesis contains 4 separate services:
+
+- Kinesis data streams allows us to do is collect and process large streams of data records in real time.
+
+- Kinesis Data Firehose  is it allows us to deliver our streaming data to various data sources, such as Amazon S3, Redshift, Elasticsearch or Splunk. Kinesis Data Firehose is our delivery stream. Data ingestion for streaming data. S3 or Elastic search.
+
+- Kinesis video streams and this allows us to basically stream live video from devices to the AWS cloud and we can build real-time applications around these video streams
+
+- Kinesis data analytics,  is what we can use to process and analyze streaming data using standard SQL queries. So we can essentially run SQL queries in real time on streaming data.
+
+
+High level overview of Kinesis
+===============================
+
+So what is Kinesis?
+
+ some view it as a managed alternative to Apache Kafka which is great to gather a lot of data in real time.
+It's great if you want to gather data such as application logs metrics IoT data or click streams. Overall is great for any kind of real time big data.
+
+It integrates with a lot of processing framework for string pressing frameworks such as Spark or NiFi or other frameworks.
+
+
+Now Kinesis is comprised of multiple services.
+
+The first one is going to be Kinesis Streams, or Kinesis Data Streams, which is going to be a low latency streaming ingest at scale.
+
+There will be Kinesis Analytics  which is to perform real time analytics on streams and SQL
+
+And finally there is Kinesis Firehose to load streams into S3, Redshift, ElasticSearch, and Splunk.
+
+
+
+What is the architecture surrounding Kinesis?
+
+The first one is Amazon Kinesis service.  So the streams can take a lot of data from say click streams or IoT devices for example a connected
+bike or metrics and logs from your servers directly.
+
+So the streams will just ingest a lot of data 
+
+you create a data processing application, which reads data from an Amazon Kinesis stream as data records.
+
+The processed records can then be sent to dashboards, can be used to generate alerts, you can use them to dynamically change pricing,
+or dynamically change advertising strategy. So there are some common scenarios for Kinesis Streams.
+
+
+- You can use the data being collected in your stream for analysis and reporting in real time. Your data processing application can work on metrics and reporting for logs as the data is streaming in, rather than wait to receive batches of data.
+
+Benefits of Kinesis
+-------------------
+
+- The most common is real-time aggregation of data, followed by loading of that data into data warehouses or MapReduce clusters.
+So, this could be loading the data into Redshift or loading the data into EMR.
+
+- Kinesis Streams is also durable and elastic, you just have to create a stream and then AWS will scale up or down as required and you will never lose data records. So this is a great alternative to installing and managing your own distributed streaming platform on EC2.
+
+Producer
+--------
+
+Now the methods used to load data into Kinesis Streams or get data from Kinesis Streams. With Amazon Kinesis Streams, there's the concept of a producer.
+
+- So a producer with Amazon Kinesis Streams is any application that puts user data records into an Amazon Kinesis stream.
+The Kinesis Producer Library allows and simplifies the creation of producer applications.
+
+So now, developers can create applications that allow them to achieve high write throughput to a Kinesis stream.
+
+Applications that get data from Kinesis Streams are called consumer applications, and you can develop these consumer applications
+by using the Kinesis Client Library.
+
+You can also use the Kinesis Agent to collect and send data to Kinesis Streams.
+
+You can also use the Kinesis REST API to put and get records from a Kinesis stream over HTTPS.
+
+But then you would like to analyze that there in real time maybe you're trying to compute a metric maybe build alerts for this you can use optionally the Amazon Kinesis Analytics service and then once you have all that data you may want to store it somewhere for later analysis or real time dashboards or all that kind of stuff that would be Amazon Kinesis Firehose.
+
+Kinesis Firehose is a near real time service.  Kinesis Firehose that it's in near real time not real time.
+
+So what does Kinesis Firehose do? 
+
+ it can deliver your data to maybe an Amazon S3 bucket, or an Amazon Redshift database, or Splunk, or ElasticSearch .
+
+ Kinesis streams are divided into what's called a shard and a shard for those who don't know what that term means is the equivalent of a partition.
+
+So what does it look like?
+
+Well we have a producer and it's going to produce to our stream in Kinesis but that stream is actually made up of shards.
+
+So in this example we have three shards and then consumers will read that data from shards. By default Kinesis streams does not store your data forever.
+
+It stores it for 24 hours by default so you basically have one day to consume the data. But if you wanted to increase safety and obviously we'll be more expensive you could retain data for up to seven days.
+
+ Kinesis is really nice because you have the ability to reprocess and replay data.
+
+So once you consume that data , the data is not gone from Kinesis streams.It will be delete based on the data retention period but you are able to read the same data over and over and over as long it is as it is in the Kinesis stream.
+
+So that means that multiple applications can consume the same stream. That means you can do real time processing and you have huge scale of throughput.
+
+Now one thing you should know is that Kinesis streams is not a database.
+
+Once you insert the data into Kinesis it's immutable that means it cannot be deleted. So it's a append only stream.
+
+
+one stream is made of many different shards or partitions. And when you get billed in Kinesis you get billed per shard provisions. You can have as many shards as you want. You will get batching available or you can do a per message put. 
+
+Now the number of shards can evolve over time so you can reshard or merge in these operations. And overall the records are not going to be ordered globally.
+
+They're going to be ordered per shard. So within the Shard all the records will be ordered based on when they're received.
+
+ The producers produced to to one or more shards. if we have four shards and consumers will receive that data.
+
+Now what do we produce to these shards?
+
+ we produce records, and what is a record made of?  it's made of something called a Data Blob. And that Data Blob is up to one megabyte . It's up to one megabyte. It's bytes.
+
+ Then you will have a record key and that record key basically helps Kinesis know to reach shard to send that data to. So basically if you choose a record key you need to have it super distributed for example user I.D.
+
+if you have a million users and they will allow you to avoid the hot partition problem where all the data goes through the same shard. Finally you have a sequence number.
+
+And this is not something the producer sends is something that gets added by Kinesis after it is ingested it basically represents the sequence number in the Shard when the data is added to that chart.
+
+So finally there is a bit of limits you need you know in Kinesis data streams. First one is that the producer can only produce one megabyte or 1000 messages per second at right per shard.
+
+So if you have ten shards you get 10 megabytes per second or 10000 messages per second.
+
+If you go over that limit you will get what's called a provision throughput exception. 
+
+Now there's two types of consumer in Kinesis.
+
+The first one is consumer classic . And you get two megabytes per second per shard across all the consumers 
+
+And so you get two megabytes per second at read per shard per enhanced consumer and there is no API calls needed. So it's a push model.
+
+And finally you need to remember data retention which is 24 hours of retention by default and you can extend this to seven days.
+
+
+Kinesis Firehose
+================
+
+- Kinesis Firehose reading from Kinesis Data Streams.
+- it's going to read the records one by one, up to one megabytes at a time.
+- if you want to transform the record, we could have a Lambda function created to transform the record.
+- Kinesis Firehose will try to fill big batch of data to write that data into a target database, or target destination. that's why it's called batch writes.
+
+- Kinesis Firehose will first write into Amazon S3 and then issue a copy command into Redshift or Amazon ElasticSearch.
+- Other destinations include third party destinations from partners, such as Datadog, splunk, New Relic,and mongoDB
+- if you have failure for processing or wants you to archive all data going to Firehose, to send all the data into a backup S3 buckets from Kinesis Data Firehose.
+
+- AWS Kinesis Data Firehose is a fully managed service, does not require any administration, and it's near real time.
+
+- Kinesis Data Streams is real time, Kinesis Data Firehose is called near real time. The reason is, in the batching, there's a 60 seconds latency minimum .if your batch is non full. So we don't have the guarantee the data will be right away in a destination.
+
+- Firehose  are going to load data into Redshift, Amazon S3, ElasticSearch or Splunk.
+- Kinesis Data Firehose there is automatic scaling. if you need more through puts, Kinesis Data Firehose will scale for you. And if you need less, it will scale down for you as well.
+
+- It also supports many data formats , For example, JSON to Parquet/ORC if you use S3.
+- if you wanted to transform a CSV into a JSON file, we could use AWS Lambda to do that transformation.
+
+- supports compression when the target is Amazon S3. So we're able to compress that data being sent Into GZIP, ZIP, or SNAPPY directly into S3.
+
+- Spark streaming, and Kinesis client library do not read it from Firehose. They only read it from Kinesis Data Stream.
+
+- Kinesis Data Streams send that stream into Firehose, and AWS Lambda to try to help you transform the data in Firehose in the format you want.
+  Once the data is formatted and transformed, we can send the outputs to an Amazon S3 bucket. if Redshift is your destination, actually it goes through S3 and then there will be a copy command issued to put that data into Redshift.
+
+- Any source record that goes through Kinesis Data Firehose, can be configured to land into another bucket of your choice.
+- even if there is a delivery failure. Well, we can also have that delivery failure put into an Amazon S3 bucket.
+
+- Firehose will receive a bunch of records from the source and it will accumulate all these records into a buffer.
+
+- is not flushed all the time. It's flushed based on some rules. It's based on time and size rules.
+
+- can automatically increase the buffer size to increased throughputs.
+- if we have high throughput, we've a lot of data going through Kinesis Firehose, then the buffer size limit will be hit,and will flush based on buffer size. But if you have low throughputs, usually that means that the buffer size limit will not be hit, but instead the buffer time limit will be hit.
+
+
+Kinesis Lab
+==============
+
+using AWS CLI
+------------
+
+install aws cli
+
+aws kinesis help
+
+aws kinesis create help
+
+aws kinesis create-stream --stream-name  my-cli-stream --shard-count 2
+
+aws kinesis describe-stream --stream-name  my-cli-stream
+
+aws kinesis delete-stream --stream-name  my-cli-stream
+
+
+Kinesis with Lambda
+==================
+
+- The customer application write the data to the stream.
+- AWS Lambda polls the stream and when it detects new records in the stream , invokes your Lambda function.
+- AWS Lambda executes the lambda function by assuming the execution role specified at the time you created the lambda function.
+- we need to atach the Role - AWSLambdaKinesisExecutionRole  ( Trusted entity -> Lambda)
+
