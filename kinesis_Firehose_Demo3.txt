@@ -76,6 +76,8 @@ sudo chkconfig aws-kinesis-agent on  (To see service has started or not)
 
 cd /home/ec2-user/kinesis
 
+chmod a+x LogGenerator.py
+
 sudo ./LogGenerator.py 200000 ( It is going to generator 2 lakhs record in log directory)
 
 cd /var/log/cadabra/
